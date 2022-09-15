@@ -1,36 +1,119 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+# https://github.com/actions
 
-# Controls when the workflow will run
+
+
+# https://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html
+# https://www.zhihu.com/zvideo/1323979259615621120
+
+# 使用GitHub Actions上的Deployer自动部署PHP应用程序
+# https://www.5axxw.com/questions/content/h0zzf2
+# https://qa.1r1g.com/sf/ask/4057591191/
+# https://www.codenong.com/b107453b507664ac0ebf/
+# http://www.caotama.com/2066116.html
+
+
+# GitHub Actions自动化部署
+# https://blog.csdn.net/qq_45487080/article/details/121345434
+# https://www.jianshu.com/p/dcebea81f888
+# https://zhuanlan.zhihu.com/p/93829286
+# https://www.wdbyte.com/2021/03/bing-wallpaper-github-action/#github-actions-%E5%AE%9A%E6%97%B6%E6%8A%93%E5%8F%96%E5%BF%85%E5%BA%94%E5%A3%81%E7%BA%B8
+# https://stackoverflow.com/questions/62303997/how-to-stop-github-actions-step-when-functional-tests-failed-using-codeception
+
+
+
+# 如何使用github操作设置php版本？
+# https://www.5axxw.com/questions/content/h0zzf2
+# https://qa.1r1g.com/sf/ask/4057591191/
+
+# GitHub Actions 手把手教你完成自动发布
+# https://www.jianshu.com/p/efad4c08554b
+
+
+# 使用Github Actions 实现ThinkPHP自动化部署
+# https://blog.csdn.net/qq_25243841/article/details/114672257
+
+
+# GitHub Actions 手把手教你完成自动发布  vue GitHub Pages来进行预览
+# https://www.jianshu.com/p/efad4c08554b
+
+
+# Serverless + GitHub Actions 完美自动化部署静态网站
+# https://zhuanlan.zhihu.com/p/149233351
+
+
+# github 自动化部署代码
+# https://www.csdn.net/tags/MtjaAg4sNzAyNTAtYmxvZwO0O0OO0O0O.html
+
+# 手把手教你如何巧用Github的Action功能
+# https://blog.51cto.com/u_10500635/4910395
+
+# 利用Github Actions自动保持 GitHub 提交状态常绿
+# https://www.cnblogs.com/Cl0ud/p/15759931.html
+
+
+
+# 工作流的名字
+name: Php CI with Maven
+# 指定工作流的触发事件 - 指定触发 workflow 的条件，通常是某些事件
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  schedule:
+    # 定时执行，Runs at 9:00 UTC every day
+    - cron:  '0 9 * * *'
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# 工作流的所有任务 表示要执行的一项或多项任务
 jobs:
-  # This workflow contains a single job called "build"
+  # 工作流任务名称 
   build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    # 配置任务运行在最新的 Ubuntu 虚拟运行环境   指定运行所需要的虚拟机环境。它是必填字段
+    # runs-on: ubuntu-latest
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ubuntu-latest
+        # operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        php-versions: 7.4
+        # php-versions: ['7.2', '7.3']
+    # 任务的说明
+    name: My first job
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
+
+    # 当前任务名称下的所有步骤分为一组 
+    # 指定每个 Job 的运行步骤，可以包含一个或多个步骤。每个步骤都可以指定以下三个字段 name步骤名称,run该步骤运行的命令或者 action ,env该步骤所需的环境变量
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      # 关键字指定了这个步骤运行 actions/checkout 动作的 v3 大版本 。这是一个可以检出仓库代码到运行器的动作，它允许你运行脚本或者其他动作侵入你的代码（比如构建或者测试工具）。
+      # 下载代码仓库 获取源码，使用的 action
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      # 安装PHP 的制定版本
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          # extensions: intl #optional
+          # ini-values: "post_max_size=256M" #optional
+      # 提交文件 这里展示了如何执行多条自己的命令
+      - name: Commit files
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+            git config --local user.email "zwn@126.com"
+            git config --local user.name "zwn"
+            git pull
+            git add bingImg/*
+            git commit -m "必应壁纸  bingImg"
+            
+
+      # 使用别人整理好的代码提交 Action市场插件
+      - name: Push changes
+        uses:  ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN_WALLPAPER }}
+          # 提交到那个分支
+          branch: main
+
+
+
+
+
