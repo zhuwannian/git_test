@@ -101,6 +101,7 @@ jobs:
             git config --local user.email "zwn@126.com"
             git config --local user.name "zwn"
             git pull
+            php BingWallpaper/GetImage.php
             git add bingImg/*
             git commit -m "必应壁纸  bingImg"
             
