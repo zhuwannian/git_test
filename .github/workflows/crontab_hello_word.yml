@@ -21,7 +21,7 @@ jobs:
         id: beijingfiledate
         run: |
           echo "::set-output name=utcDate::$(date  +'%Y/%m/%d %H:%M:%S')"
-          echo "::set-output name=bjDate::$(date -d '+8 hour' +'%Y/%m/%d')"
+          echo "::set-output name=bjDate::$(date -d '+8 hour' +'%Y/%m/%d %H:%M:%S')"
       # 设置北京当前时间
       - name: show date
         run: |
