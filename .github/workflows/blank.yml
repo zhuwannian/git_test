@@ -1,6 +1,7 @@
 # This is a basic workflow to help you get started with Actions
 
 # https://github.com/actions
+# 安装vscode actions 扩展
 
 
 
@@ -60,7 +61,7 @@ name: Php CI with Maven
 on:
   schedule:
     # 定时执行，Runs at 9:00 UTC every day
-    - cron:  '0 9 * * *'
+    - cron:  '0 15 * * *'
 
 # 工作流的所有任务 表示要执行的一项或多项任务
 jobs:
@@ -95,13 +96,14 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           # extensions: intl #optional
           # ini-values: "post_max_size=256M" #optional
+      - name: Run Php Application
+        run: php BingWallpaper/GetImage.php
       # 提交文件 这里展示了如何执行多条自己的命令
       - name: Commit files
         run: |
             git config --local user.email "zwn@126.com"
             git config --local user.name "zwn"
             git pull
-            php BingWallpaper/GetImage.php
             git add bingImg/*
             git commit -m "必应壁纸  bingImg"
             
