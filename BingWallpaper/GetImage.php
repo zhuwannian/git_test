@@ -313,6 +313,7 @@ class GetImage
                 return $ret;
             }
             var_dump('-$num-',$num);
+            var_dump('-$url-',$url);
             var_dump('-$startOne-',$ret);
             return $this->startOne($num);
         }
