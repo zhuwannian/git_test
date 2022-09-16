@@ -115,7 +115,12 @@ jobs:
           github_token: ${{ secrets.TOKEN_WALLPAPER }}
           # 提交到那个分支
           branch: main
-
+      # 检测PHP语法错误
+      - name: Check PHP syntax errors
+        uses: overtrue/phplint@8.1
+        with:
+          path: .
+          options: --exclude=*.log
 
 
 
