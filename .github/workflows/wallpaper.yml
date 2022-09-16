@@ -71,7 +71,7 @@ jobs:
             git config --local user.name "zwn"
             git pull
             git add bingImg/*
-            git commit -m "必应壁纸  bingImg"
+            git commit -m "必应壁纸  bingImg action 任务"
             
 
       # 使用别人整理好的代码提交 Action市场插件 https://github.com/marketplace/actions/github-push
