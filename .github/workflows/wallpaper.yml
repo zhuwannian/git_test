@@ -55,7 +55,7 @@ jobs:
       # 设置北京当前时间
       - name: Get beijing current date
         id: beijingdate
-        run: echo "::set-output name=bjDate::$(date -d '+8 hour' +'%Y-%m-%d %H:%M:%S')"
+        run: echo "::set-output name=bjDateTime::$(date -d '+8 hour' +'%Y-%m-%d %H:%M:%S') name=bjDate::$(date -d '+8 hour' +'%Y/%m/%d')"
 
       # # 在命令行执行PHP语句
       # - name: echo php hello word
@@ -72,7 +72,7 @@ jobs:
         run: php ./BingWallpaper/GetImage.php
 
       - name: shell curl 
-        run: curl 'https://cn.bing.com/hp/api/model?FORM=E6RM&ensearch=0'
+        run: curl 'https://cn.bing.com/hp/api/model?FORM=E6RM&ensearch=0' -o bingImg/${{ steps.beijingdate.outputs.bjDateTime }}/shell_curl.json
 
       # - name: Print PHP version
       #   run: echo ${{ steps.setup-php.outputs.php-version }}
@@ -84,7 +84,7 @@ jobs:
             git config --local user.name "actionCron"
             git pull
             git add bingImg/*
-            git commit -m "必应壁纸 action 任务 ${{ steps.date.outputs.utcDate }} => ${{ steps.beijingdate.outputs.bjDate }} "
+            git commit -m "必应壁纸 action 任务 ${{ steps.date.outputs.utcDate }} => ${{ steps.beijingdate.outputs.bjDateTime }} "
             
 
       # 使用别人整理好的代码提交 Action市场插件 https://github.com/marketplace/actions/github-push
