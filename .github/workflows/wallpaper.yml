@@ -14,14 +14,14 @@ on:
 jobs:
   # 工作流任务名称 
   echo-hello-word:
-      # 配置任务运行在最新的 Ubuntu 虚拟运行环境   指定运行所需要的虚拟机环境。它是必填字段
-      runs-on: ubuntu-latest
-      name: My first Cron job
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
-        - name: echo hello word
-          run: echo "hello word shell"
+    # 配置任务运行在最新的 Ubuntu 虚拟运行环境   指定运行所需要的虚拟机环境。它是必填字段
+    runs-on: ubuntu-latest
+    name: My first Cron job
+    # steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v3
+    #   - name: echo hello word
+    #     run: echo "hello word shell"
     # runs-on: ${{ matrix.operating-system }}
     # strategy:
     #   matrix:
