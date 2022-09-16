@@ -46,22 +46,22 @@ jobs:
           php-version: '7.4'
           # php-version: ${{ matrix.php-versions }}
 
-      # 在命令行执行PHP语句
-      - name: echo php hello word
-        shell: php {0}
-        run: |
-          <?php
-          $welcome = "Hello, world PHP";
-          echo $welcome;
+      # # 在命令行执行PHP语句
+      # - name: echo php hello word
+      #   shell: php {0}
+      #   run: |
+      #     <?php
+      #     $welcome = "Hello, world PHP";
+      #     echo $welcome;
 
-      - name: echo php hello word file
-        run: php ./Test/HelloWord.php
+      # - name: echo php hello word file
+      #   run: php ./Test/HelloWord.php
 
       - name: php wallpaper
         run: php ./BingWallpaper/GetImage.php
 
-      - name: Print PHP version
-        run: echo ${{ steps.setup-php.outputs.php-version }}
+      # - name: Print PHP version
+      #   run: echo ${{ steps.setup-php.outputs.php-version }}
 
       # 提交文件 这里展示了如何执行多条自己的命令
       - name: Commit files
@@ -81,13 +81,13 @@ jobs:
           # 提交到那个分支
           branch: main
 
-          
-      # 检测PHP语法错误
-      - name: Check PHP syntax errors
-        uses: overtrue/phplint@8.1
-        with:
-          path: .
-          options: --exclude=*.log
 
-      - name: Check PHP version
-        run: php --version
+      # 检测PHP语法错误
+      # - name: Check PHP syntax errors
+      #   uses: overtrue/phplint@8.1
+      #   with:
+      #     path: .
+      #     options: --exclude=*.log
+
+      # - name: Check PHP version
+      #   run: php --version
