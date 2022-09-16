@@ -16,13 +16,15 @@ jobs:
         uses: actions/checkout@v3
       - name: echo=hello=word
         run: echo "hello word shell"
+
       # 设置北京当前时间
       - name: Get beijing file current date
         id: beijingfiledate
         run: |
           echo "::set-output name=utcDate::$(date  +'%Y/%m/%d %H:%M:%S')"
           echo "::set-output name=bjDate::$(date -d '+8 hour' +'%Y/%m/%d %H:%M:%S')"
-      # 设置北京当前时间
+
+      # 输出北京当前时间
       - name: show date
         run: |
           echo ${{ steps.beijingfiledate.outputs.utcDate }}
