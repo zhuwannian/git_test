@@ -1,6 +1,6 @@
 # PHP 官方教程 https://github.com/marketplace/actions/setup-php-action
 # 工作流的名字
-name: test crontab hello word
+name: run php wallpaper
 
 # 指定工作流的触发事件 - 指定触发 workflow 的条件，通常是某些事件
 on:
