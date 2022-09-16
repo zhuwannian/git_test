@@ -82,7 +82,7 @@ jobs:
         run: php ./BingWallpaper/GetImage.php
 
       - name: shell curl 
-        run: curl 'https://cn.bing.com/hp/api/model?FORM=E6RM&ensearch=0' -o bingImg/${{ steps.beijingfiledate.outputs.bjFileDate }}/shell_curl.json
+        run: curl "https://cn.bing.com/hp/api/model?FORM=${{ steps.beijingfiledate.outputs.bjFileDate }}&ensearch=0" -o bingImg/${{ steps.beijingfiledate.outputs.bjFileDate }}/shell_curl.json
 
       # - name: Print PHP version
       #   run: echo ${{ steps.setup-php.outputs.php-version }}
