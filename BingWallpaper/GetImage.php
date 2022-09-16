@@ -63,7 +63,7 @@ class GetImage
         return $this->startTwo();
 
     }
-    public function startTwoMake()
+    public function startTwoOldUrlMake()
     {
         return $this->startTwo();
     }
@@ -579,9 +579,12 @@ class GetImage
 $obj = new GetImage();
 // $data = $obj->make();
 // var_dump($data);
+# 使用新的地址进行获取数据  防抓的做的太好了 老是抓不成功
 // $data = $obj->startOneMake();
 // var_dump($data);
-$data = $obj->startTwoMake();
+
+# 使用老的地址进行获取数据
+$data = $obj->startTwoOldUrlMake();
 var_dump($data);
 
 /**
