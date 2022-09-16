@@ -14,57 +14,57 @@ on:
 jobs:
   # 工作流任务名称 
   echo-hello-word:
-    # 配置任务运行在最新的 Ubuntu 虚拟运行环境   指定运行所需要的虚拟机环境。它是必填字段
-      runs-on: ubuntu-latest
-      name: My first Cron job
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
-        - name: echo hello word
-          run: echo "hello word shell"
-    # runs-on: ${{ matrix.operating-system }}
-    # strategy:
-    #   matrix:
-    #     operating-system: ubuntu-latest
-    #     # operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-    #     php-versions: '7.4'
-    #     # php-versions: ['7.2', '7.3']
-    # # 任务的说明
-    # name: My first Cron job
-    # # 当前任务名称下的所有步骤分为一组 
-    # # 指定每个 Job 的运行步骤，可以包含一个或多个步骤。每个步骤都可以指定以下三个字段 name步骤名称,run该步骤运行的命令或者 action ,env该步骤所需的环境变量
-    # steps:
-    #   # 关键字指定了这个步骤运行 actions/checkout 动作的 v3 大版本 。这是一个可以检出仓库代码到运行器的动作，它允许你运行脚本或者其他动作侵入你的代码（比如构建或者测试工具）。
-    #   # 下载代码仓库 获取源码，使用的 action
-    #   - name: Checkout
-    #     uses: actions/checkout@v3
+      # 配置任务运行在最新的 Ubuntu 虚拟运行环境   指定运行所需要的虚拟机环境。它是必填字段
+      # runs-on: ubuntu-latest
+      # name: My first Cron job
+      # steps:
+      #   - name: Checkout
+      #     uses: actions/checkout@v3
+      #   - name: echo hello word
+      #     run: echo "hello word shell"
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ubuntu-latest
+        # operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        php-versions: '7.4'
+        # php-versions: ['7.2', '7.3']
+    # 任务的说明
+    name: My first Cron job
+    # 当前任务名称下的所有步骤分为一组 
+    # 指定每个 Job 的运行步骤，可以包含一个或多个步骤。每个步骤都可以指定以下三个字段 name步骤名称,run该步骤运行的命令或者 action ,env该步骤所需的环境变量
+    steps:
+      # 关键字指定了这个步骤运行 actions/checkout 动作的 v3 大版本 。这是一个可以检出仓库代码到运行器的动作，它允许你运行脚本或者其他动作侵入你的代码（比如构建或者测试工具）。
+      # 下载代码仓库 获取源码，使用的 action
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    #   # 安装PHP 的制定版本
-    #   - name: Install PHP
-    #     uses: shivammathur/setup-php@v2
-    #     with:
-    #       php-version: ${{ matrix.php-versions }}
+      # 安装PHP 的制定版本
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
 
-    #   # 在命令行执行PHP语句
-    #   - name: echo php hello word
-    #     shell: php {0}
-    #     run: |
-    #       <?php
-    #       $welcome = "Hello, world PHP";
-    #       echo $welcome;
+      # 在命令行执行PHP语句
+      - name: echo php hello word
+        shell: php {0}
+        run: |
+          <?php
+          $welcome = "Hello, world PHP";
+          echo $welcome;
 
-    #   - name: echo php hello word file
-    #     run: php ./Test/HelloWord.php
+      - name: echo php hello word file
+        run: php ./Test/HelloWord.php
 
-    #   - name: Print PHP version
-    #     run: echo ${{ steps.setup-php.outputs.php-version }}
+      - name: Print PHP version
+        run: echo ${{ steps.setup-php.outputs.php-version }}
 
-    #   # 检测PHP语法错误
-    #   - name: Check PHP syntax errors
-    #     uses: overtrue/phplint@8.1
-    #     with:
-    #       path: .
-    #       options: --exclude=*.log
+      # 检测PHP语法错误
+      - name: Check PHP syntax errors
+        uses: overtrue/phplint@8.1
+        with:
+          path: .
+          options: --exclude=*.log
 
-    #   - name: Check PHP version
-    #     run: php --version
+      - name: Check PHP version
+        run: php --version
