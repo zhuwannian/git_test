@@ -38,8 +38,8 @@ class GetImage
     // public $zhUrl = 'https://www.bing.com/hp/api/model?FORM=Z9FD1&ensearch=0';
     // public $zhOldUrl = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1';
     public $zhUrl = 'https://cn.bing.com/hp/api/model?FORM=Z9FD1&ensearch=0';
-    public $zhOldUrl = 'https://cn.bing.com/HPImageArchive.aspx?mkt=zh-CN&format=js&idx=0&n=8&nc=1614319565639&pid=hp&FORM=BEHPTB&uhd=1&uhdwidth=3840&uhdheight=2160';
-    
+    public $zhOldUrl = 'https://cn.bing.com/HPImageArchive.aspx?mkt=zh-CN&format=js&idx=0&n=1&nc=1614319565639&pid=hp&FORM=BEHPTB&uhd=1&uhdwidth=3840&uhdheight=2160';
+
 
 
 
@@ -63,10 +63,112 @@ class GetImage
         return $this->startTwo();
 
     }
-    public function startTwoOldUrlMake()
+    public function startTwoOldUrlMake($retNum = 1)
     {
-        return $this->startTwo();
+        $imageData = $this->startTwo();
+        $url = $this->zhUrl;
+        $urlList = parse_url($url);
+        $host = $urlList['scheme'] . '://' . $urlList['host'] . '';
+        $retData = $this->getRedDataTwoOldUrl($host,$imageData,$retNum);
+        $this->dataToSaveJsonFile($retData);
+        return $retData;
     }
+    
+    public function getRedDataTwoOldUrl($host,$imageData,$retNum)
+    {
+        $retData = [];
+        foreach($imageData as $k =>$item){
+            if($k >= $retNum){
+                // 返回最新的几个
+                break;
+            }
+
+            $enddate = $item['enddate'];
+            $url = $item['url'];
+            $urlbase = $item['urlbase'];
+            $copyright = $item['copyright'];
+            $title = $item['title'];
+            /*
+            // https://cn.bing.com/th?id=OHR.PianePuma_ZH-CN1482049046_UHD.jpg
+            array(15) {
+                ["startdate"]=>
+                string(8) "20220915"
+                ["fullstartdate"]=>
+                string(12) "202209151600"
+                ["enddate"]=>
+                string(8) "20220916"
+                ["url"]=>
+                string(93) "/th?id=OHR.PianePuma_ZH-CN1482049046_UHD.jpg&rf=LaDigue_UHD.jpg&pid=hp&w=3840&h=2160&rs=1&c=4"
+                ["urlbase"]=>
+                string(36) "/th?id=OHR.PianePuma_ZH-CN1482049046"
+                ["copyright"]=>
+                string(95) "百内国家公园中的一头美洲狮，智利巴塔哥尼亚 (© Ingo Arndt/Minden Pictures)"
+                ["copyrightlink"]=>
+                string(59) "/search?q=%e7%be%8e%e6%b4%b2%e7%8b%ae&FORM=hpcapt&mkt=zh-cn"
+                ["title"]=>
+                string(15) "敏捷而隐秘"
+                ["quiz"]=>
+                string(88) "/search?q=Bing+homepage+quiz&filters=WQOskey:%22HPQuiz_20220915_PianePuma%22&FORM=HPQUIZ"
+                ["wp"]=>
+                bool(true)
+                ["hsh"]=>
+                string(32) "e26cdbfc792dcdcfc13e653a8a2ee2df"
+                ["drk"]=>
+                int(1)
+                ["top"]=>
+                int(1)
+                ["bot"]=>
+                int(1)
+                ["hs"]=>
+                array(0) {
+                }
+            }
+            */
+
+            $orgImageUrlBool = stripos($url,'http') === false ? false:true;
+            if($orgImageUrlBool){
+                $orgImageUrl = $url;
+            }else{
+                $orgImageUrl = $host . $url;
+            }
+            $orgImageBaseUrlBool = stripos($urlbase,'http') === false ? false:true;
+            if($orgImageBaseUrlBool){
+                $orgImageBaseUrl = $urlbase;
+            }else{
+                $orgImageBaseUrl = $host . $urlbase;
+            }
+
+            $urlList = parse_url($orgImageUrl);
+                // var_dump($urlList);
+                
+            $arrQuery = $this->convertUrlQuery($urlList['query']);
+            $urlId = $urlList['scheme'] . '://' . $urlList['host'] . $urlList['path'] . '?id=' . $arrQuery['id'];
+
+
+            $retData[] = [
+                'enddate'=>$enddate,
+                'filedate'=>$this->dateFromToFormat( $enddate),
+                // 'url'=>$orgImageUrl,
+                'url_id'=>$urlId,
+                // 'urlbase'=>$orgImageBaseUrl,
+                'copyright'=>$copyright,
+                'title'=>$title,
+                // 'urlList'=>$urlList,
+                // 'arrQuery'=>$arrQuery,
+            ];
+
+
+
+
+
+
+            
+        }
+
+        return $retData;
+    }
+
+
     public function startTwo($num = 1)
     {
         $url = $this->zhOldUrl;
@@ -101,6 +203,80 @@ class GetImage
         // return $data['tooltips'] ;
 
     }
+
+// 
+    /**
+     * 时间格式转换
+     * 根据指定格式解析时间字符串
+     *  date（“Y-m-d”，strtotime("20170822")）
+     * https://www.php.cn/php-ask-469262.html
+     */
+    public function dateFromToFormat($orgDate)
+    {
+        //  $dateData = \DateTime::createFromFormat('Ymd','20170822')->format('Y-m-d');
+        return  \DateTime::createFromFormat('Ymd',$orgDate,new \DateTimeZone('Asia/Shanghai'))->format('Y/m/d');
+    }
+    /**
+     * 时间格式转换
+     * 根据指定格式解析时间字符串
+     * 没有前导零 转成有前导零
+     * 2022-9-16 ==>> 2022/09/16 这中可以转换
+     * 2022916   ==>> 2029/07/06 这种转换不了  >>>>>>> 2022126
+     * 2022126   ==>> 2029/07/06 这种转换不了  >>>>>>> 2022-12-6  >>>>>>> 2022-1-26
+     * 
+     * 设置时区 
+     * https://www.php.net/manual/zh/datetime.settimezone.php
+     * 
+     */
+    public function dateFromToYFormat($orgDate)
+    {
+        // 'timezone' => 'Asia/Shanghai',
+        // 'timezone' => 'UTC',
+        // return  \DateTime::createFromFormat('Y-n-j',$orgDate)->format('Y/m/d');
+        return  \DateTime::createFromFormat('Y-n-j',$orgDate,new \DateTimeZone('Asia/Shanghai'))->format('Y/m/d');
+        // return  \DateTime::createFromFormat('Ynj',$orgDate,new \DateTimeZone('Asia/Shanghai'))->format('Y/m/d');
+        // return  date('Y/m/d' , strtotime($orgDate));
+
+        // https://qastack.cn/programming/1699958/formatting-a-number-with-leading-zeros-in-php
+        // $isodate = sprintf("%04d-%02d-%02d", $year, $month, $day);
+    }
+    /**
+     * 数据保存至json文件中
+     */
+    public function dataToSaveJsonFile($orgDate)
+    {
+        $filedate = date("Y/m/d");
+        foreach($orgDate as $v){
+            $jsonData = json_encode($v,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            if(isset($v['filedate'])){
+                $filedate = $v['filedate'];
+            }
+            $path = './bingImg/' . $filedate;
+            $fileName = '1.json';
+            
+            $this->saveFile($path,$fileName ,$jsonData);
+        }
+
+
+
+    }
+
+    public function saveFile($path,$fileName ,$jsonData ,$fileType = FILE_APPEND)
+    {
+        $this->mkdirDirname($path);
+        file_put_contents($path . '/' . $fileName,$jsonData);
+        // file_put_contents($path . '/' . $fileName,$jsonData,$fileType);
+    }
+
+
+
+
+
+
+
+
+
+
     public function startOne($num = 1)
     {
 
@@ -177,7 +353,21 @@ class GetImage
                 $ssd = $v['Ssd'];
                 $fullDateString = $v['FullDateString'];
                 $currentDate = str_replace([' ','月'],['-',''],$fullDateString);
-                $currentList = explode('-',$currentDate);
+
+
+
+                // echo $currentDate . PHP_EOL;
+                // 2022-9-16  2022/09/16
+                $dateFile = $this->dateFromToYFormat($currentDate);
+                // $dateFile = $this->dateFromToYFormat(date('Ynj'));
+                // $showMsg = $currentDate . '  ' . $dateFile . '  ' . date('Ynj');
+                // echo $showMsg . PHP_EOL;
+                // continue;
+
+
+
+
+                // $currentList = explode('-',$currentDate);
 
                 $description = $imageContent['Description'];
 
@@ -237,7 +427,8 @@ class GetImage
                     $orgImageUrl = $host . $imageUrl;
                 }
 
-                $filePath = './bingImg/' . implode('/',$currentList);
+                // $filePath = './bingImg/' . implode('/',$currentList);
+                $filePath = './bingImg/' . $dateFile;
                 $this->mkdirDirname($filePath);
                 $filePathRepa = realpath($filePath);
 
@@ -262,7 +453,8 @@ class GetImage
                         'fullDateString'=>$fullDateString,
                         'ssd'=>$ssd,
                         'currentDate'=>$currentDate,
-                        'currentList'=>$currentList,
+                        // 'currentList'=>$currentList,
+                        'dateFile'=>$dateFile,
                         'filePathRepa'=>$filePathRepa,
                     ];
                 }
@@ -586,6 +778,9 @@ $obj = new GetImage();
 # 使用老的地址进行获取数据
 $data = $obj->startTwoOldUrlMake();
 var_dump($data);
+
+
+
 
 /**
  * 
