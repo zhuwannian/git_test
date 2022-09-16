@@ -104,7 +104,7 @@ jobs:
             git commit -m "必应壁纸  bingImg"
             
 
-      # 使用别人整理好的代码提交 Action市场插件
+      # 使用别人整理好的代码提交 Action市场插件 https://github.com/marketplace/actions/github-push
       - name: Push changes
         uses:  ad-m/github-push-action@master
         with:
