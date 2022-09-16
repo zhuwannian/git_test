@@ -50,7 +50,7 @@ jobs:
       # 设置当前时间
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S')"
 
       # # 在命令行执行PHP语句
       # - name: echo php hello word
