@@ -120,10 +120,11 @@ class GetImage
             sleep(6);
             $num ++;
             // var_dump('-$url-',$url);
-            // var_dump('-$num-',$num);
+            
             if($num >= 7){
                 return $ret;
             }
+            var_dump('-$num-',$num);
             return $this->startOne($num);
         }
         return $ret;
