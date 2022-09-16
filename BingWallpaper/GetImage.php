@@ -298,7 +298,7 @@ class GetImage
         $this->GetHeaderKeyFunc($headerList);
 
         $aHeader = [
-            CURLOPT_HTTPHEADER=>$this->headerKeyArr,
+            // CURLOPT_HTTPHEADER=>$this->headerKeyArr,
         ];
         // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $ret = $this->getToCurl($url,$aHeader);
