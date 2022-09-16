@@ -97,7 +97,7 @@ jobs:
           # extensions: intl #optional
           # ini-values: "post_max_size=256M" #optional
       - name: Run Php Application
-        run: php BingWallpaper/GetImage.php
+        run: php ./BingWallpaper/GetImage.php
       # 提交文件 这里展示了如何执行多条自己的命令
       - name: Commit files
         run: |
