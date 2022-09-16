@@ -64,6 +64,8 @@
 # 也就是 UTC + 8 = 北京当前时间  ======>>>>>>> 北京当前时间 - 8 = UTC 约等于 GMT
 # https://blog.csdn.net/weixin_42346935/article/details/117510514
 
+# Linux中大小写字符转换具体方法
+# https://www.lxlinux.net/4843.html
 
 # 工作流的名字
 name: Php CI with Maven
