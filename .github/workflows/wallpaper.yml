@@ -64,7 +64,7 @@ jobs:
         run: |
           echo "::set-output name=bjDate::$(date -d '+8 hour' +'%Y/%m/%d')"
           echo "::set-output name=bjFileDate::$(date -d '+8 hour' +'%Y/%m/%d')"
-          echo "::set-output name=randstr::$(echo '$RANDOM'|md5sum|cut -c 1-4 | tr [:lower:] [:upper:])"
+          echo "::set-output name=randstr::$(echo $RANDOM|md5sum|cut -c 1-4 | tr [:lower:] [:upper:])"
 
 
       # # 在命令行执行PHP语句
