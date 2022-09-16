@@ -18,7 +18,7 @@ jobs:
       matrix:
         operating-system: ubuntu-latest
         # operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: 7.4
+        php-versions: '7.4'
         # php-versions: ['7.2', '7.3']
     # 任务的说明
     name: My first Cron job
@@ -36,6 +36,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
       # 安装PHP 的制定版本
       - name: echo php hello word
+        shell: php {0}
         run: |
           <?php
           $welcome = "Hello, world PHP";
