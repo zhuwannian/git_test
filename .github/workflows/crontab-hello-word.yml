@@ -1,0 +1,50 @@
+# 工作流的名字
+name: test crontab hello word
+
+# 指定工作流的触发事件 - 指定触发 workflow 的条件，通常是某些事件
+on:
+  schedule:
+    # 定时执行 每30分钟执行一次
+    - cron:  '*/30 * * * *'
+
+# 工作流的所有任务 表示要执行的一项或多项任务
+jobs:
+  # 工作流任务名称 
+  echo-hello-word:
+    # 配置任务运行在最新的 Ubuntu 虚拟运行环境   指定运行所需要的虚拟机环境。它是必填字段
+    # runs-on: ubuntu-latest
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ubuntu-latest
+        # operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        php-versions: 7.4
+        # php-versions: ['7.2', '7.3']
+    # 任务的说明
+    name: My first Cron job
+    # 当前任务名称下的所有步骤分为一组 
+    # 指定每个 Job 的运行步骤，可以包含一个或多个步骤。每个步骤都可以指定以下三个字段 name步骤名称,run该步骤运行的命令或者 action ,env该步骤所需的环境变量
+    steps:
+      # 关键字指定了这个步骤运行 actions/checkout 动作的 v3 大版本 。这是一个可以检出仓库代码到运行器的动作，它允许你运行脚本或者其他动作侵入你的代码（比如构建或者测试工具）。
+      # 下载代码仓库 获取源码，使用的 action
+      - name: Checkout
+        uses: actions/checkout@v3
+      # 安装PHP 的制定版本
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+      # 安装PHP 的制定版本
+      - name: echo php hello word
+        run: |
+          <?php
+          $welcome = "Hello, world PHP";
+          echo $welcome;
+      - name: Print PHP version
+        run: echo ${{ steps.setup-php.outputs.php-version }}
+      # 检测PHP语法错误
+      - name: Check PHP syntax errors
+        uses: overtrue/phplint@8.1
+        with:
+          path: .
+          options: --exclude=*.log
