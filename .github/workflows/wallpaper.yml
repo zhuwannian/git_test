@@ -57,9 +57,31 @@ jobs:
       - name: echo php hello word file
         run: php ./Test/HelloWord.php
 
+      - name: php wallpaper
+        run: php ./BingWallpaper/GetImage.php
+
       - name: Print PHP version
         run: echo ${{ steps.setup-php.outputs.php-version }}
 
+      # 提交文件 这里展示了如何执行多条自己的命令
+      - name: Commit files
+        run: |
+            git config --local user.email "zwn@126.com"
+            git config --local user.name "zwn"
+            git pull
+            git add bingImg/*
+            git commit -m "必应壁纸  bingImg"
+            
+
+      # 使用别人整理好的代码提交 Action市场插件 https://github.com/marketplace/actions/github-push
+      - name: Push changes
+        uses:  ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN_WALLPAPER }}
+          # 提交到那个分支
+          branch: main
+
+          
       # 检测PHP语法错误
       - name: Check PHP syntax errors
         uses: overtrue/phplint@8.1
