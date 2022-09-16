@@ -87,7 +87,7 @@ class GetImage
         // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $ret = $this->getToCurl($url,$aHeader);
         if(!$ret['success'] || empty($ret['data'] )){
-            sleep(1);
+            sleep(4);
             $num ++;
             // var_dump('-$url-',$url);
             var_dump('-$num-',$num);
