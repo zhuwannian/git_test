@@ -55,7 +55,16 @@ jobs:
       # 设置北京当前时间
       - name: Get beijing current date
         id: beijingdate
-        run: echo "::set-output name=bjDateTime::$(date -d '+8 hour' +'%Y-%m-%d %H:%M:%S') ; ::set-output name=bjDate::$(date -d '+8 hour' +'%Y/%m/%d')"
+        run: echo "::set-output name=bjDateTime::$(date -d '+8 hour' +'%Y-%m-%d %H:%M:%S')"
+
+
+      # 设置北京当前时间
+      - name: Get beijing file current date
+        id: beijingfiledate
+        run: |
+          echo "::set-output name=bjDate::$(date -d '+8 hour' +'%Y/%m/%d')"
+          echo "::set-output name=bjFileDate::$(date -d '+8 hour' +'%Y/%m/%d')"
+
 
       # # 在命令行执行PHP语句
       # - name: echo php hello word
@@ -72,7 +81,7 @@ jobs:
         run: php ./BingWallpaper/GetImage.php
 
       - name: shell curl 
-        run: curl 'https://cn.bing.com/hp/api/model?FORM=E6RM&ensearch=0' -o bingImg/${{ steps.beijingdate.outputs.bjDateTime }}/shell_curl.json
+        run: curl 'https://cn.bing.com/hp/api/model?FORM=E6RM&ensearch=0' -o bingImg/${{ steps.beijingfiledate.outputs.bjDate }}/shell_curl.json
 
       # - name: Print PHP version
       #   run: echo ${{ steps.setup-php.outputs.php-version }}
