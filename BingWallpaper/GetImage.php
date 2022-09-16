@@ -63,7 +63,11 @@ class GetImage
         return $this->startTwo();
 
     }
-    public function startTwo()
+    public function startTwoMake()
+    {
+        return $this->startTwo();
+    }
+    public function startTwo($num = 1)
     {
         $url = $this->zhOldUrl;
         $urlList = parse_url($url);
@@ -71,18 +75,23 @@ class GetImage
         $arrQuery['FORM'] = $this->getRandStr();
         $urlParams = $this->getUrlQuery($arrQuery);
         $url = $urlList['scheme'] . '://' . $urlList['host'] . '' . $urlList['path'] . '?' . $urlParams;
-        
-        $this->GetHeaderKeyFunc();
+
+        $headerList = [
+            'Referer'=> 'https://cn.bing.com/?FORM=' . $arrQuery['FORM'],
+        ];
+        $this->GetHeaderKeyFunc($headerList);
 
         $aHeader = [
             CURLOPT_HTTPHEADER=>$this->headerKeyArr,
         ];
         // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $ret = $this->getToCurl($url,$aHeader);
-        if(!$ret['success']){
+        if(!$ret['success'] || empty($ret['data'] )){
             sleep(1);
+            $num ++;
             // var_dump('-$url-',$url);
-            $this->startOne();
+            var_dump('-$num-',$num);
+            return $this->startTwo($num);
         }
         $data = $ret['data'] ;
         return $data['images'] ;
@@ -567,11 +576,10 @@ class GetImage
 $obj = new GetImage();
 // $data = $obj->make();
 // var_dump($data);
-$data = $obj->startOneMake();
-
-var_dump($data);
-// $data = $obj->startTwo();
+// $data = $obj->startOneMake();
 // var_dump($data);
+$data = $obj->startTwoMake();
+var_dump($data);
 
 /**
  * 
