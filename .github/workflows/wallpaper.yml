@@ -30,7 +30,7 @@ jobs:
     #     php-versions: 7.4
         # php-versions: ['7.2', '7.3']
     # 任务的说明
-    name: My first Cron job
+    # name: My first Cron job
     # 当前任务名称下的所有步骤分为一组 
     # 指定每个 Job 的运行步骤，可以包含一个或多个步骤。每个步骤都可以指定以下三个字段 name步骤名称,run该步骤运行的命令或者 action ,env该步骤所需的环境变量
     steps:
