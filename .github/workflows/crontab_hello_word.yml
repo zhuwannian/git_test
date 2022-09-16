@@ -19,6 +19,7 @@ jobs:
 
       # 设置北京当前时间
       - name: Get beijing file current date
+        # 定义唯一标志
         id: beijingfiledate
         run: |
           echo "::set-output name=utcDate::$(date  +'%Y/%m/%d %H:%M:%S')"
