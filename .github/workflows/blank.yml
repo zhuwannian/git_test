@@ -17,10 +17,11 @@
 # https://blog.csdn.net/qq_45487080/article/details/121345434
 # https://www.jianshu.com/p/dcebea81f888
 # https://zhuanlan.zhihu.com/p/93829286
-# https://www.wdbyte.com/2021/03/bing-wallpaper-github-action/#github-actions-%E5%AE%9A%E6%97%B6%E6%8A%93%E5%8F%96%E5%BF%85%E5%BA%94%E5%A3%81%E7%BA%B8
 # https://stackoverflow.com/questions/62303997/how-to-stop-github-actions-step-when-functional-tests-failed-using-codeception
 
 
+# Github Actions 定时抓取必应壁纸
+# https://www.wdbyte.com/2021/03/bing-wallpaper-github-action/#github-actions-%E5%AE%9A%E6%97%B6%E6%8A%93%E5%8F%96%E5%BF%85%E5%BA%94%E5%A3%81%E7%BA%B8
 
 # 如何使用github操作设置php版本？
 # https://www.5axxw.com/questions/content/h0zzf2
